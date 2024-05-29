@@ -1,5 +1,5 @@
 
-public class ProdutosDTO {
+public class Produto {
     private Integer id;
     private String nome;
     private Integer valor;
