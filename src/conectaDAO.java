@@ -5,18 +5,26 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class conectaDAO {
+        Connection conn = null;
+        private String url = "jdbc:mysql://localhost:3306/uc11_db"; 
+        private String user = "root"; 
+        private String password = "";
     
     public Connection connectDB(){
-        Connection conn = null;
+        
         
         try {
-        
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/uc11_db","root","");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(url,user,password);
             
         } catch (SQLException erro){
             JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Falha ao carregar a classe da conexão. Classe não encontrada\n" + ex.getMessage());
         }
         return conn;
     }
+    
+    
     
 }
