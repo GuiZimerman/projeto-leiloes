@@ -36,9 +36,6 @@ public class ProdutoDAO {
             System.out.println("Erro ao cadastrar produto no banco de dados.\n" + e.getMessage());
         }
         
-
-        
-        
     }
     
     public ArrayList<Produto> listarProdutos(){
@@ -50,7 +47,7 @@ public class ProdutoDAO {
             
             while(rs.next()){
                Produto produto = new Produto();
-               
+                    
                produto.setId(rs.getInt("id"));
                produto.setNome(rs.getString("nome"));
                produto.setValor(rs.getInt("valor"));
@@ -63,6 +60,22 @@ public class ProdutoDAO {
         }
         
         return listagem;
+    }
+    
+    public void venderProduto(Produto produto) {
+        
+        try {
+            Connection conn = new ConectaDAO().connectDB();
+            PreparedStatement ps = conn.prepareStatement("UPDATE produtos SET status = \"Vendido\" WHERE id = ?");
+        
+            ps.setInt(1, produto.getId());
+            ps.execute();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar o registro no banco de dados.");
+            System.out.println("Erro ao buscar o registro do banco de dados" + e.getMessage());
+        }
+        
     }
     
     
