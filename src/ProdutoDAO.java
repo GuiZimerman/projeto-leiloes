@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ProdutoDAO {
     
     
-    ArrayList<Produto> listagem = new ArrayList<>();
+    
     
     public void cadastrarProduto (Produto produto){
         
@@ -39,6 +39,7 @@ public class ProdutoDAO {
     }
     
     public ArrayList<Produto> listarProdutos(){
+        ArrayList<Produto> listagem = new ArrayList<>();
         
         try{ 
             Connection conn = new ConectaDAO().connectDB();
@@ -76,6 +77,32 @@ public class ProdutoDAO {
             System.out.println("Erro ao buscar o registro do banco de dados" + e.getMessage());
         }
         
+    }
+    
+    public ArrayList<Produto> listarProdutosVendidos(){
+        
+        ArrayList<Produto> listagemVendidos = new ArrayList<>();
+        
+        try{ 
+            Connection conn = new ConectaDAO().connectDB();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM produtos WHERE status = \"Vendido\"");
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+               Produto produto = new Produto();
+                    
+               produto.setId(rs.getInt("id"));
+               produto.setNome(rs.getString("nome"));
+               produto.setValor(rs.getInt("valor"));
+               produto.setStatus(rs.getString("status"));
+               
+               listagemVendidos.add(produto);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar os registros do banco de dados.");
+        }
+        
+        return listagemVendidos;
     }
     
     
