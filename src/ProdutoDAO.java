@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ProdutoDAO {
     
     
-    ArrayList<Produto> listagem = new ArrayList<>();
+    
     
     public void cadastrarProduto (Produto produto){
         
@@ -36,12 +36,10 @@ public class ProdutoDAO {
             System.out.println("Erro ao cadastrar produto no banco de dados.\n" + e.getMessage());
         }
         
-
-        
-        
     }
     
     public ArrayList<Produto> listarProdutos(){
+        ArrayList<Produto> listagem = new ArrayList<>();
         
         try{ 
             Connection conn = new ConectaDAO().connectDB();
@@ -50,7 +48,7 @@ public class ProdutoDAO {
             
             while(rs.next()){
                Produto produto = new Produto();
-               
+                    
                produto.setId(rs.getInt("id"));
                produto.setNome(rs.getString("nome"));
                produto.setValor(rs.getInt("valor"));
@@ -63,6 +61,64 @@ public class ProdutoDAO {
         }
         
         return listagem;
+    }
+    
+    public void venderProduto(Produto produto) {
+        
+        try {
+            Connection conn = new ConectaDAO().connectDB();
+            PreparedStatement ps = conn.prepareStatement("UPDATE produtos SET status = \"Vendido\" WHERE id = ?");
+        
+            ps.setInt(1, produto.getId());
+            ps.execute();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar o registro no banco de dados.");
+            System.out.println("Erro ao buscar o registro do banco de dados" + e.getMessage());
+        }
+        
+    }
+    
+    public void venderProdutoId(int id) {
+        
+        try {
+            Connection conn = new ConectaDAO().connectDB();
+            PreparedStatement ps = conn.prepareStatement("UPDATE produtos SET status = \"Vendido\" WHERE id = ?");
+        
+            ps.setInt(1,id);
+            ps.execute();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar o registro no banco de dados.");
+            System.out.println("Erro ao buscar o registro do banco de dados" + e.getMessage());
+        }
+        
+    }
+    
+    public ArrayList<Produto> listarProdutosVendidos(){
+        
+        ArrayList<Produto> listagemVendidos = new ArrayList<>();
+        
+        try{ 
+            Connection conn = new ConectaDAO().connectDB();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM produtos WHERE status = \"Vendido\"");
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+               Produto produto = new Produto();
+                    
+               produto.setId(rs.getInt("id"));
+               produto.setNome(rs.getString("nome"));
+               produto.setValor(rs.getInt("valor"));
+               produto.setStatus(rs.getString("status"));
+               
+               listagemVendidos.add(produto);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar os registros do banco de dados.");
+        }
+        
+        return listagemVendidos;
     }
     
     
