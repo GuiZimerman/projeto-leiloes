@@ -79,6 +79,22 @@ public class ProdutoDAO {
         
     }
     
+    public void venderProdutoId(int id) {
+        
+        try {
+            Connection conn = new ConectaDAO().connectDB();
+            PreparedStatement ps = conn.prepareStatement("UPDATE produtos SET status = \"Vendido\" WHERE id = ?");
+        
+            ps.setInt(1,id);
+            ps.execute();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar o registro no banco de dados.");
+            System.out.println("Erro ao buscar o registro do banco de dados" + e.getMessage());
+        }
+        
+    }
+    
     public ArrayList<Produto> listarProdutosVendidos(){
         
         ArrayList<Produto> listagemVendidos = new ArrayList<>();

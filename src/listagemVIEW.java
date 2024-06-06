@@ -142,7 +142,7 @@ public class ListagemVIEW extends javax.swing.JFrame {
         
         ProdutoDAO produtosdao = new ProdutoDAO();
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
+        produtosdao.venderProdutoId(Integer.parseInt(id));
         listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
